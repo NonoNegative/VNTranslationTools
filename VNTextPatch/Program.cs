@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -34,10 +34,6 @@ namespace VNTextPatch
                         InsertLocal(args, options);
                         break;
 
-                    case "insertgdocs":
-                        InsertGoogleDocs(args, options);
-                        break;
-
                     default:
                         Console.WriteLine($"Unknown operation: {operation}");
                         PrintUsage();
@@ -70,7 +66,6 @@ namespace VNTextPatch
             Extracter extracter = new Extracter(inputLocation.Collection, textLocation.Collection);
             try
             {
-                
                 if (inputLocation.ScriptName != null)
                     extracter.ExtractOne(inputLocation.ScriptName, textLocation.ScriptName);
                 else
@@ -82,9 +77,6 @@ namespace VNTextPatch
             {
                 IDisposable textCollection = textLocation.Collection as IDisposable;
                 textCollection?.Dispose();
-
-                if (textCollection is ExcelScriptCollection && extracter.TotalLines == 0)
-                    File.Delete(textPath);
             }
 
             CharacterNames.Save();
@@ -146,57 +138,6 @@ namespace VNTextPatch
             }
         }
 
-        private static void InsertGoogleDocs(string[] args, Options options)
-        {
-            if (args.Length != 4 && args.Length != 5)
-            {
-                PrintUsage();
-                return;
-            }
-
-            string inputPath = Path.GetFullPath(args[1]);
-            string spreadsheetId = args[2];
-            string outputPath = Path.GetFullPath(args[3]);
-            string sjisExtPath = args.Length > 4 ? Path.GetFullPath(args[4]) : null;
-
-            ScriptLocation inputLocation;
-            if (!TryParseLocalPath(inputPath, options.Format, out inputLocation))
-                return;
-
-            GoogleDocsScriptCollection textCollection = new GoogleDocsScriptCollection(spreadsheetId);
-
-            if (sjisExtPath == null)
-                sjisExtPath = Path.Combine(inputLocation.ScriptName != null ? Path.GetDirectoryName(outputPath) : outputPath, "sjis_ext.bin");
-
-            if (File.Exists(sjisExtPath))
-                StringUtil.SjisTunnelEncoding.SetMappingTable(File.ReadAllBytes(sjisExtPath));
-
-            string textScriptName;
-
-            Inserter inserter;
-            if (inputLocation.ScriptName != null)
-            {
-                textScriptName = Path.GetFileNameWithoutExtension(inputPath);
-                ScriptLocation outputLocation = ScriptLocation.FromFilePath(outputPath, options.Format);
-                inserter = new Inserter(inputLocation.Collection, textCollection, outputLocation.Collection);
-                inserter.InsertOne(inputLocation.ScriptName, textScriptName, outputLocation.ScriptName);
-            }
-            else
-            {
-                FolderScriptCollection inputCollection = (FolderScriptCollection)inputLocation.Collection;
-                FolderScriptCollection outputCollection = new FolderScriptCollection(outputPath, options.Format, inputCollection.Extension);
-                inserter = new Inserter(inputCollection, textCollection, outputCollection);
-                inserter.InsertAll();
-            }
-
-            byte[] sjisExtContent = StringUtil.SjisTunnelEncoding.GetMappingTable();
-            if (sjisExtContent.Length > 0)
-                File.WriteAllBytes(sjisExtPath, sjisExtContent);
-
-            if (inserter.Statistics != null)
-                PrintInsertionStatistics(inserter.Statistics);
-        }
-
         private static bool TryParseLocalPath(string path, string format, out ScriptLocation location)
         {
             location = new ScriptLocation();
@@ -243,13 +184,8 @@ namespace VNTextPatch
 
                     return ScriptLocation.FromFilePath(textPath);
 
-                case ".xlsx":
-                    ExcelScriptCollection collection = new ExcelScriptCollection(textPath);
-                    string scriptName = inputLocation.ScriptName != null ? Path.GetFileNameWithoutExtension(inputLocation.ScriptName) : null;
-                    return new ScriptLocation(collection, scriptName);
-
                 default:
-                    throw new ArgumentException("Script path must be a .json or .xlsx file or an existing folder");
+                    throw new ArgumentException("Script path must be a .json file or an existing folder");
             }
         }
 
@@ -273,7 +209,6 @@ namespace VNTextPatch
             Console.WriteLine($"Usage:");
             Console.WriteLine($"    {assemblyName} extractlocal infile|infolder scriptfile|scriptfolder");
             Console.WriteLine($"    {assemblyName} insertlocal infile|infolder scriptfile|scriptfolder outfile|outfolder");
-            Console.WriteLine($"    {assemblyName} insertgdocs infile|infolder spreadsheetId outfile|outfolder");
         }
 
         private class Options

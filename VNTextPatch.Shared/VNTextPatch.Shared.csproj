@@ -8,16 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.ComponentModel.Composition" Version="9.0.0" />
-    <PackageReference Include="Google.Apis.Sheets.v4" Version="1.49.0.2168" />
-    <PackageReference Include="NPOI" Version="2.5.6" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\external\FreeMote\FreeMote.Psb\FreeMote.Psb.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Include="names.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -27,6 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Scripts\Nexas\spm.ksy" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 </Project>
