@@ -14,6 +14,8 @@ namespace VNTextPatch
     {
         public static void Main(string[] args)
         {
+            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+
             Options options = Options.Parse(args, out args);
             if (args.Length == 0)
             {

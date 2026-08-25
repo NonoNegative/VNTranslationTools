@@ -9,7 +9,7 @@ namespace VNTextPatch.Shared.Util
 {
     internal abstract class WordWrapper
     {
-        private static readonly char[] LineBreakChars = { ' ', '-' };
+        private static readonly char[] LineBreakChars = { ' ', '-', '，' };
 
         public string Wrap(string text, Regex controlCodePattern = null, string lineBreak = "\r\n")
         {
