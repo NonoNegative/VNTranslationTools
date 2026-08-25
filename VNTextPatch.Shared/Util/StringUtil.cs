@@ -1,9 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using VNTextPatch.Shared.Scripts;
+using Range = VNTextPatch.Shared.Scripts.Range;
 
 namespace VNTextPatch.Shared.Util
 {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -103,9 +103,40 @@ namespace VNTextPatch.Shared.Scripts
         protected override string GetTextForWrite(Range range, ScriptString str)
         {
             string text = base.GetTextForWrite(range, str);
-            text = MonospaceWordWrapper.Default.Wrap(text);
+            int charsPerLine = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["MonospaceCharactersPerLine"]);
+            text = new QlieWordWrapper(charsPerLine).Wrap(text);
             text = text.Replace("\r\n", "[n]");
             return text;
+        }
+
+        private class QlieWordWrapper : WordWrapper
+        {
+            private readonly int _lineWidth;
+
+            public QlieWordWrapper(int charactersPerLine)
+            {
+                _lineWidth = charactersPerLine;
+            }
+
+            protected override int LineWidth => _lineWidth;
+
+            protected override int GetTextWidth(string text, int offset, int length)
+            {
+                int width = 0;
+                for (int i = 0; i < length; i++)
+                {
+                    char c = text[offset + i];
+                    if ((c >= 0x00 && c <= 0x7E) || (c >= 0xFF61 && c <= 0xFF9F))
+                    {
+                        width += 1;
+                    }
+                    else
+                    {
+                        width += 2;
+                    }
+                }
+                return width;
+            }
         }
     }
 }

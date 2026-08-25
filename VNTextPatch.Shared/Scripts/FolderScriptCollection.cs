@@ -1,22 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using VNTextPatch.Shared.Scripts.AdvHd;
-using VNTextPatch.Shared.Scripts.ArcGameEngine;
-using VNTextPatch.Shared.Scripts.Artemis;
-using VNTextPatch.Shared.Scripts.Ethornell;
-using VNTextPatch.Shared.Scripts.Kirikiri;
-using VNTextPatch.Shared.Scripts.Majiro;
-using VNTextPatch.Shared.Scripts.Mware;
-using VNTextPatch.Shared.Scripts.Propeller;
-using VNTextPatch.Shared.Scripts.RealLive;
-using VNTextPatch.Shared.Scripts.ShSystem;
-using VNTextPatch.Shared.Scripts.Silkys;
-using VNTextPatch.Shared.Scripts.Softpal;
-using VNTextPatch.Shared.Scripts.SystemNnn;
-using VNTextPatch.Shared.Scripts.TmrHiroAdvSystem;
-using VNTextPatch.Shared.Scripts.Yuris;
 
 namespace VNTextPatch.Shared.Scripts
 {
@@ -29,37 +14,8 @@ namespace VNTextPatch.Shared.Scripts
             TemporaryScripts =
                 new IScript[]
                 {
-                    new AdvHdScript(),
-                    new ArtemisAsbScript(),
-                    new ArtemisAstScript(),
-                    new ArtemisTxtScript(),
-                    new AgeScript(),
-                    new CatSystemScript(),
-                    new CSystemScript(),
-                    new EthornellScript(),
-                    new JsonScript(),
-                    new KaguyaScript(),
-                    new KirikiriKsScript(),
-                    new KirikiriScnScript(),
-                    new KirikiriSocScript(),
-                    new KirikiriTjsScript(),
-                    new MajiroScript(),
-                    new MusicaScript(),
-                    new MwareScript(),
-                    new PropellerScript(),
                     new QlieScript(),
-                    new RealLiveScript(),
-                    new RenpyScript(),
-                    new ShSystemScript(),
-                    new SilkysMapScript(),
-                    new SilkysMesScript(),
-                    new SoftpalScript(),
-                    new SystemNnnDevScript(),
-                    new SystemNnnReleaseScript(),
-                    new TmrHiroAdvSystemCodeScript(),
-                    new TmrHiroAdvSystemTextScript(),
-                    new WhaleScript(),
-                    new YurisScript()
+                    new JsonScript()
                 };
         }
 

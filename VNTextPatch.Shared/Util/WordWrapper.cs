@@ -1,14 +1,15 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 using VNTextPatch.Shared.Scripts;
+using Range = VNTextPatch.Shared.Scripts.Range;
 
 namespace VNTextPatch.Shared.Util
 {
     internal abstract class WordWrapper
     {
-        private static readonly char[] LineBreakChars = { ' ', '-' };
+        private static readonly char[] LineBreakChars = { ' ', '-', '，', '。', '―' };
 
         public string Wrap(string text, Regex controlCodePattern = null, string lineBreak = "\r\n")
         {
